@@ -12,9 +12,9 @@ enum QuizCategory:String{
     
     case sports
     case science
-    
-    func allCases()->Int{
-        return 2
+        
+    static func allCases()->Array<QuizCategory>{
+        return [.sports, .science]
     }
     
     init(name: String) {

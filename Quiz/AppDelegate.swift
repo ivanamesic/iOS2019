@@ -14,11 +14,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var navigationController: UINavigationController?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        print("APPDELEGATE")
+        let userDefaults = UserDefaults.standard
+        let value = userDefaults.string(forKey: "user_id")
+        var root: UIViewController
+        if (value != nil){
+            root = QuizViewController()
+        } else{
+            root = LoginViewController()
+        }
         
-        window = UIWindow(frame: UIScreen.main.bounds)
-        let vc = LoginViewController()
-        window?.rootViewController = vc
+        navigationController = UINavigationController(rootViewController: root)
+        window?.rootViewController = navigationController
+        
+        //window = UIWindow(frame: UIScreen.main.bounds)
+        //let vc = LoginViewController()
+        //window?.rootViewController = vc
         window?.makeKeyAndVisible()
+
         return true
     }
 

@@ -30,7 +30,7 @@ class LoginService{
                             let token = parseJSON["token"] as? String,
                             let id = parseJSON["user_id"] as? Int{
                             let userDefaults = UserDefaults.standard
-                            userDefaults.set(id, forKey: "username")
+                            userDefaults.set(id, forKey: "user_id")
                             userDefaults.set(token, forKey: "token")
                             print("token: ", token ," id: ",id)
                             completion(json)

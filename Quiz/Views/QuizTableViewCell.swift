@@ -26,9 +26,5 @@ class QuizTableViewCell: UITableViewCell {
     @IBOutlet weak var quizCellTitle: UILabel!
     
     
-    func setValues(image: UIImageView, level: String, title: String){
-        self.quizCellImage = image
-        self.quizCellLevel?.text = level
-        self.quizCellTitle?.text = title
-    }
+
 }
