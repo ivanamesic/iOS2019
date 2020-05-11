@@ -24,7 +24,7 @@ class LoginViewController: UIViewController {
         login(password: passwordField.text ?? "", username: usernameField.text ?? "")
     }
     
-
+//b
     @IBAction func ClearAllButton(_ sender: UIButton) {
         if(sender.tag==1){
             print("\(sender.currentTitle) buttontap!")
