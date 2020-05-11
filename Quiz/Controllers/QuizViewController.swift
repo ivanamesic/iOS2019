@@ -18,7 +18,7 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var QuizTableView: UITableView!
     @IBOutlet weak var wrongFetchLabel: UILabel!
     @IBOutlet weak var funFactLabel: UILabel!
-    @IBOutlet weak var questionView: QuestionView!
+    @IBOutlet weak var questionView: UIView!
 
     @IBAction func SignOutButton(_ sender: UIButton) {
         if sender.tag != 1 {return}

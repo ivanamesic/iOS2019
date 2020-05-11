@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         print("SCENE DELEGATE")
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = QuizViewController()
+            window.rootViewController = LoginViewController()
             self.window = window
             window.makeKeyAndVisible()
         }
