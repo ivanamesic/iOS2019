@@ -19,15 +19,18 @@ class QuestionView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame:frame)
+        common()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder:coder)
+    }
+    func common(){
         guard let view = loadNib() else { return }
         view.frame = self.bounds
         self.addSubview(view)
         contentView = view
         self.isHidden = true
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder:coder)
     }
     
     var contentView:UIView?

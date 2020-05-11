@@ -36,7 +36,7 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.wrongFetchLabel.isHidden = true
         self.QuizTableView.delegate = self
         self.QuizTableView.dataSource = self
-        self.questionView = QuestionView(frame: CGRect(x: 10,y: 20,width: 50,height: 50))
+        self.questionView.isHidden = true
         QuizTableView.register(UINib(nibName: "QuizTableViewCell", bundle: nil), forCellReuseIdentifier: "QuizTableViewCell")
         backgroundColors[QuizCategory.science] = UIColor(displayP3Red: 0.572, green: 0.827, blue: 0.643, alpha: 1.0)
         backgroundColors[QuizCategory.sports] = UIColor(displayP3Red: 0.368, green: 0.584, blue: 0.729, alpha: 1.0)
