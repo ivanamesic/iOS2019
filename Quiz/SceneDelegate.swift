@@ -15,8 +15,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        
-        print("SCENE DELEGATE")
+        if let windowScene = scene as? UIWindowScene {
+            let window = UIWindow(windowScene: windowScene)
+            let userDefaults = UserDefaults.standard
+            
+            let value = userDefaults.string(forKey: "user_id")
+            var root: UIViewController
+            if (value != nil){
+                root = QuizViewController()
+            } else{
+                root = LoginViewController()
+            }
+            
+            window.rootViewController = root
+            self.window = window
+            window.makeKeyAndVisible()
+        }
+    }
+    
+    
+    func changeScenesOnLogin(){
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = QuizViewController()

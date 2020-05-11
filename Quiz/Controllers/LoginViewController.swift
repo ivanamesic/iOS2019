@@ -24,7 +24,6 @@ class LoginViewController: UIViewController {
         login(password: passwordField.text ?? "", username: usernameField.text ?? "")
     }
     
-//b
     @IBAction func ClearAllButton(_ sender: UIButton) {
         if(sender.tag==1){
             print("\(sender.currentTitle) buttontap!")
@@ -35,7 +34,6 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         wrongPasswordLabel.isHidden = true
     }
     
@@ -61,7 +59,11 @@ class LoginViewController: UIViewController {
                     self.wrongPasswordLabel.isHidden = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
                         let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                        let sceneDelegate = self.view.window?.windowScene?.delegate as! SceneDelegate
+                        sceneDelegate.changeScenesOnLogin()
                         appDelegate.switchToQuizController()
+                        print(UserDefaults.standard.string(forKey: "user_id")
+)
                     })
                 }else{
                     self.wrongPasswordLabel.isHidden=false;

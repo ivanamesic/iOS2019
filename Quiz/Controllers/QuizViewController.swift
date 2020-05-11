@@ -28,7 +28,7 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     var allQuizzes: Array<Quiz> = []
-    var backgroundColors: Dictionary<QuizCategory, UIColor> = [:]
+    //var backgroundColors: Dictionary<QuizCategory, UIColor> = [:]
     var refresher: UIRefreshControl!
     
     override func viewDidLoad() {
@@ -38,8 +38,8 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.QuizTableView.dataSource = self
         self.questionView.isHidden = true
         QuizTableView.register(UINib(nibName: "QuizTableViewCell", bundle: nil), forCellReuseIdentifier: "QuizTableViewCell")
-        backgroundColors[QuizCategory.science] = UIColor(displayP3Red: 0.572, green: 0.827, blue: 0.643, alpha: 1.0)
-        backgroundColors[QuizCategory.sports] = UIColor(displayP3Red: 0.368, green: 0.584, blue: 0.729, alpha: 1.0)
+        //Constants.backgroundColors[QuizCategory.science] = UIColor(displayP3Red: 0.572, green: 0.827, blue: 0.643, alpha: 1.0)
+        //backgroundColors[QuizCategory.sports] = UIColor(displayP3Red: 0.368, green: 0.584, blue: 0.729, alpha: 1.0)
 
     }
     
@@ -54,11 +54,15 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.wrongFetchLabel.isHidden = true
         
-        cell.backgroundColor = backgroundColors[thisCell.category]
+        cell.backgroundColor = Constants.backgroundColors[thisCell.category]
         cell.quizCellTitle.text = thisCell.title
-        cell.quizCellLevel.text = "Level: "+String(thisCell.level)
+        var lvl = "";
+        for i in 1...thisCell.level{
+            lvl += "*"
+        }
+        cell.quizCellLevel.text = lvl
         //print("cell", cell.quizCellLevel)
-        
+        cell.quizCellDescription.text=thisCell.description
         self.fetchQuizImage(pickedQuiz: thisCell, imageView: cell.quizCellImage)
         
         return cell
@@ -70,7 +74,7 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 65.0
+        return 100.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

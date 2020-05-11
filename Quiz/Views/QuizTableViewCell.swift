@@ -25,6 +25,7 @@ class QuizTableViewCell: UITableViewCell {
     @IBOutlet weak var quizCellLevel: UILabel!
     @IBOutlet weak var quizCellTitle: UILabel!
     
+    @IBOutlet weak var quizCellDescription: UILabel!
     
 
 }
