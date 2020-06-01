@@ -18,50 +18,69 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var QuizTableView: UITableView!
     @IBOutlet weak var wrongFetchLabel: UILabel!
     @IBOutlet weak var funFactLabel: UILabel!
-    @IBOutlet weak var questionView: UIView!
 
-    @IBAction func SignOutButton(_ sender: UIButton) {
-        if sender.tag != 1 {return}
+    @objc func SignOutButton(_ sender: UIButton) {
         let userDefaults = UserDefaults.standard
         userDefaults.removeObject(forKey: "token")
         userDefaults.removeObject(forKey: "user_id")
+        print("Logging out...")
+        self.navigationController?.pushViewController(LoginViewController(), animated: false)
+        
     }
     
-    var allQuizzes: Array<Quiz> = []
-    //var backgroundColors: Dictionary<QuizCategory, UIColor> = [:]
+    var allQuizzes: Array<Array<Quiz>> = []
     var refresher: UIRefreshControl!
+    var groupedByCategories: [QuizCategory: Array<Quiz>] = [:]
+    var categories: [Int:QuizCategory] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.wrongFetchLabel.isHidden = true
         self.QuizTableView.delegate = self
         self.QuizTableView.dataSource = self
-        self.questionView.isHidden = true
+        
         QuizTableView.register(UINib(nibName: "QuizTableViewCell", bundle: nil), forCellReuseIdentifier: "QuizTableViewCell")
-        //Constants.backgroundColors[QuizCategory.science] = UIColor(displayP3Red: 0.572, green: 0.827, blue: 0.643, alpha: 1.0)
-        //backgroundColors[QuizCategory.sports] = UIColor(displayP3Red: 0.368, green: 0.584, blue: 0.729, alpha: 1.0)
+        self.QuizTableView.tableFooterView=getTableFooter(self.QuizTableView)
+        self.view.isHidden = false
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+           super.viewWillAppear(animated)
+           navigationController?.navigationBar.isTranslucent = true
+           navigationController?.navigationBar.barTintColor = .clear
+    }
+    
+    
+    func getTableFooter(_ tableView: UITableView)->UIView{
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 25))
+        let button = UIButton(frame: CGRect(x: 10, y: 5, width: tableView.frame.size.width, height: 25))
+        button.setTitle("Log out", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.backgroundColor = UIColor.darkGray
+        button.isOpaque = true
+        button.addTarget(self, action: #selector(SignOutButton(_:)), for: .touchUpInside)
+        footerView.addSubview(button)
+        return footerView
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return allQuizzes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuizTableViewCell", for: indexPath) as? QuizTableViewCell ?? QuizTableViewCell()
         
-        let thisCell: Quiz = allQuizzes[indexPath.row]
+        let thisCell: Quiz = allQuizzes[indexPath.section][indexPath.row]
         
         self.wrongFetchLabel.isHidden = true
         
-        cell.backgroundColor = Constants.backgroundColors[thisCell.category]
         cell.quizCellTitle.text = thisCell.title
         var lvl = "";
         for i in 1...thisCell.level{
             lvl += "*"
         }
         cell.quizCellLevel.text = lvl
-        //print("cell", cell.quizCellLevel)
         cell.quizCellDescription.text=thisCell.description
         self.fetchQuizImage(pickedQuiz: thisCell, imageView: cell.quizCellImage)
         
@@ -69,7 +88,7 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return allQuizzes.count
+        return allQuizzes[section].count
     }
     
     
@@ -78,26 +97,24 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let chosenQuiz = allQuizzes[indexPath.row]
-        let chosenQuestion = chosenQuiz.questions[0]
-        print("aaaaa")
-        let customView = (Bundle.main.loadNibNamed("QuestionView", owner: QuestionView.self, options: [:])?.first as? QuestionView)!
-        self.questionView.addSubview(customView)
-        //var view = QuestionView(frame: CGRect(x: 10, y: 30, width: 50, height: 40))
-        //self.questionView.setValues(question: chosenQuestion, color: Constants.backgroundColors[chosenQuiz.category]!)
-        print("heere2")
-        
-        /*let oneQuizController = OneQuizViewController()
-        oneQuizController.indexpath = indexPath
-        oneQuizController.kategorije = kategorije
-        oneQuizController.kvizovi = cells
-        //self.cells.removeAll()
-        self.navigationController?.pushViewController(oneQuizController, animated: true)*/
-        
+        print(indexPath.section, indexPath.row)
+        let oneQuizController = OneQuizController()
+        let quiz = allQuizzes[indexPath.section][indexPath.row]
+        oneQuizController.quiz = quiz
+        self.navigationController?.pushViewController(oneQuizController, animated: false)
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 18))
+        let label = UILabel(frame: CGRect(x: 10, y: 5, width: tableView.frame.size.width, height: 18))
+        label.text = categories[section]?.text
+        view.backgroundColor = Constants.backgroundColors[categories[section]!]
+        view.addSubview(label)
+        return view
+    }
+    
+    
     func fetchQuizzes() {
-            print("Fetching...")
             let urlString = "https://iosquiz.herokuapp.com/api/quizzes"
             let quizService = QuizService()
             
@@ -106,18 +123,30 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
                     if let quizArray = quizArray {
                         self.wrongFetchLabel.isHidden = true
                         var collection: Array<String> = []
-                        var temp: Array<Quiz> = []
+                        var tempDict: [QuizCategory:Array<Quiz>] = [:]
                         for quiz in quizArray{
-                            temp.append(quiz!)
                             for question in quiz!.questions{
                                 collection.append(question.questionText)
+                            }
+                            var res = tempDict[quiz!.category]
+                            if res==nil{
+                                var newar = [quiz!]
+                                tempDict[quiz!.category]=newar
+                            } else {
+                                res?.append(quiz!)
+                                tempDict[quiz!.category]=res
                             }
                         }
                         
                         let number = collection.filter({e in e.contains("NBA")}).count
-                        
+                        self.groupedByCategories=tempDict
                         self.allQuizzes.removeAll()
-                        self.allQuizzes = temp
+                        var counter = 0
+                        for (cat, ar) in tempDict{
+                            self.allQuizzes.append(ar)
+                            self.categories[counter]=cat
+                            counter += 1
+                        }
                         
                         self.funFactLabel.text="FUN FACT: The word NBA is in questions \(number) times"
                         self.QuizTableView.reloadData()

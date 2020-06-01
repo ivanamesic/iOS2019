@@ -46,7 +46,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="quizCellDescription" destination="b8t-l7-cfy" id="hxo-C8-KSG"/>
-                <outlet property="quizCellImage" destination="6JN-kq-ZzB" id="vTU-pJ-NcG"/>
+                <outlet property="quizCellImage" destination="6JN-kq-ZzB" id="yyr-lM-c3k"/>
                 <outlet property="quizCellLevel" destination="WQr-ex-0aH" id="3y8-2x-OlP"/>
                 <outlet property="quizCellTitle" destination="6EO-AL-rdi" id="eJ0-we-YNS"/>
             </connections>

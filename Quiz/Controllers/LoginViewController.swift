@@ -33,6 +33,7 @@ class LoginViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        print("LOg in did load")
         super.viewDidLoad()
         wrongPasswordLabel.isHidden = true
     }
@@ -58,12 +59,8 @@ class LoginViewController: UIViewController {
                 if e != nil {
                     self.wrongPasswordLabel.isHidden = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                        let sceneDelegate = self.view.window?.windowScene?.delegate as! SceneDelegate
-                        sceneDelegate.changeScenesOnLogin()
-                        appDelegate.switchToQuizController()
-                        print(UserDefaults.standard.string(forKey: "user_id")
-)
+                        let quizViewController = QuizViewController()
+                        self.navigationController?.pushViewController(quizViewController, animated: false)
                     })
                 }else{
                     self.wrongPasswordLabel.isHidden=false;

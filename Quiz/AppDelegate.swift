@@ -10,27 +10,9 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
-    var navigationController: UINavigationController?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        print("APPDELEGATE")
-        let userDefaults = UserDefaults.standard
-        let value = userDefaults.string(forKey: "user_id")
-        var root: UIViewController
-        if (value != nil){
-            root = QuizViewController()
-        } else{
-            root = LoginViewController()
-        }
         
-        navigationController = UINavigationController(rootViewController: root)
-        window?.rootViewController = navigationController
-        
-        //window = UIWindow(frame: UIScreen.main.bounds)
-        //let vc = LoginViewController()
-        //window?.rootViewController = vc
-        window?.makeKeyAndVisible()
 
         return true
     }
@@ -49,14 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
     
-    func switchToQuizController() {
-        
-        let vc = QuizViewController()
-        navigationController = UINavigationController(rootViewController: vc)
-        window?.rootViewController = navigationController
-        print("Changing to quiz view")
-        
-    }
+
 
 
 }
