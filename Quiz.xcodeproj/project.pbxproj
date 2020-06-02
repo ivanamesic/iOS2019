@@ -28,6 +28,7 @@
 		52A39ABB2468CA3700177A88 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52A39AB92468CA3700177A88 /* LoginViewController.xib */; };
 		52BFF43A248558E100F9EEC4 /* OneQuizController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BFF439248558E100F9EEC4 /* OneQuizController.swift */; };
 		52BFF43C2485A51F00F9EEC4 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BFF43B2485A51F00F9EEC4 /* RootViewController.swift */; };
+		52BFF43E248693A800F9EEC4 /* ServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BFF43D248693A800F9EEC4 /* ServerResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		52A39AB92468CA3700177A88 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		52BFF439248558E100F9EEC4 /* OneQuizController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneQuizController.swift; sourceTree = "<group>"; };
 		52BFF43B2485A51F00F9EEC4 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		52BFF43D248693A800F9EEC4 /* ServerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 				523076C424686EF00062A92E /* QuizCategory.swift */,
 				523076C024686E740062A92E /* Quiz.swift */,
 				522780812468E5DF001E3975 /* Constants.swift */,
+				52BFF43D248693A800F9EEC4 /* ServerResponse.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 				523076C824686EF00062A92E /* Question.swift in Sources */,
 				523076C724686EF00062A92E /* QuizCategory.swift in Sources */,
 				523076DF2468709B0062A92E /* QuestionView.swift in Sources */,
+				52BFF43E248693A800F9EEC4 /* ServerResponse.swift in Sources */,
 				52BFF43C2485A51F00F9EEC4 /* RootViewController.swift in Sources */,
 				52BFF43A248558E100F9EEC4 /* OneQuizController.swift in Sources */,
 				523076C324686E920062A92E /* LoginService.swift in Sources */,

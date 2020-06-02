@@ -23,7 +23,6 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
         let userDefaults = UserDefaults.standard
         userDefaults.removeObject(forKey: "token")
         userDefaults.removeObject(forKey: "user_id")
-        print("Logging out...")
         self.navigationController?.pushViewController(LoginViewController(), animated: false)
         
     }
@@ -97,7 +96,6 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath.section, indexPath.row)
         let oneQuizController = OneQuizController()
         let quiz = allQuizzes[indexPath.section][indexPath.row]
         oneQuizController.quiz = quiz

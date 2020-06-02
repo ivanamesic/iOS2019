@@ -58,10 +58,10 @@ class LoginViewController: UIViewController {
             DispatchQueue.main.async {
                 if e != nil {
                     self.wrongPasswordLabel.isHidden = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                        let quizViewController = QuizViewController()
-                        self.navigationController?.pushViewController(quizViewController, animated: false)
-                    })
+                    //DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+                    let quizViewController = QuizViewController()
+                    self.navigationController?.pushViewController(quizViewController, animated: false)
+                    //})
                 }else{
                     self.wrongPasswordLabel.isHidden=false;
 

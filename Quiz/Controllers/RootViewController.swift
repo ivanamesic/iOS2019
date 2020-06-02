@@ -12,18 +12,8 @@ class RootViewController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        /*let userDefaults = UserDefaults.standard
-        let value = userDefaults.string(forKey: "user_id")
-        var root: UIViewController
-        if (value != nil){
-            root = QuizViewController()
-        } else{
-            root = LoginViewController()
-        }
-        print(root)*/
         self.navigationBar.isHidden = true //Swift 5
-        //self.navigationController?.pushViewController(root, animated: false)
-        // Do any additional setup after loading the view.
+        
     }
     
 

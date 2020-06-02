@@ -8,6 +8,13 @@
 
 import UIKit
 
+struct SolvedQuiz: Codable {
+    var quizId: Int?
+    var userId: Int?
+    var time: TimeInterval?
+    var no_of_correct: Int?
+
+}
 
 class OneQuizController: UIViewController {
     
@@ -17,14 +24,20 @@ class OneQuizController: UIViewController {
     var quizImage: UIImageView!
     var startButton: UIButton!
     
+    var duration: TimeInterval?
+    var startTime: Date?
+    var numberOfCorrect: Int? = 0
+    var numberOfAnswered: Int? = 0
+    var scrollPaneWidth: CGFloat?
+    var scrollPaneHeight: CGFloat?
+    
     @objc func startQuizAction(sender: UIButton!) {
-        print("quiz start")
         self.questionScrollView.isHidden = false
+        self.startButton.isHidden = true
     }
 
     
     override func viewDidLoad() {
-        print("LOADED")
         super.viewDidLoad()
         view.backgroundColor=UIColor.white
         
@@ -80,44 +93,41 @@ class OneQuizController: UIViewController {
     
     func setScrollView(){
         let scrollView = UIScrollView(frame: CGRect(x: 0,y: 0,width: 100,height: 100))
-        scrollView.backgroundColor = UIColor.blue
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         let scrollX = scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         let scrollTop = scrollView.topAnchor.constraint(equalTo: self.startButton.bottomAnchor, constant: view.frame.height*0.02)
-        let scrollBottom = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.frame.height*0.02)
-        let scrollWidth = scrollView.widthAnchor.constraint(equalToConstant: view.frame.width*0.85)
-        view.addConstraints([scrollX, scrollTop, scrollBottom, scrollWidth])
+        //let scrollBottom = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.frame.height*0.02)
+        self.scrollPaneWidth = view.frame.width*0.85
+        let scrollWidth = scrollView.widthAnchor.constraint(equalToConstant: scrollPaneWidth!)
+        self.scrollPaneHeight = view.frame.height*0.55
+        let scrollHeight = scrollView.heightAnchor.constraint(equalToConstant: scrollPaneHeight!)
+
+        view.addConstraints([scrollX, scrollTop, scrollHeight, scrollWidth])
+
         self.questionScrollView = scrollView
         self.questionScrollView.isHidden = true
-        
     }
     
     func setupSlideScrollView(questions: [Question]) {
-        let slides = createQuestions(questions: questions)
-        questionScrollView.contentSize = CGSize(width: questionScrollView.frame.width * CGFloat(slides.count), height: questionScrollView.frame.height)
+        let questions = quiz?.questions
+        questionScrollView.contentSize = CGSize(width: self.scrollPaneWidth! * CGFloat(questions!.count), height: self.scrollPaneHeight!)
+        for q in 0...questions!.count-1 {
+            let newView = QuestionView(frame: CGRect(x:CGFloat(q)*self.scrollPaneWidth!,y: 0,width: self.scrollPaneWidth!,height: self.scrollPaneHeight!), question: questions![q], color: Constants.backgroundColors[quiz!.category]!)
+            self.questionScrollView.addSubview(newView)
 
-        
-        for i in 0 ..< slides.count {
-            questionScrollView.addSubview(slides[i])
+            //addScrollViewConstraints(scrollView: questionScrollView, subView: newView)
         }
         
         questionScrollView.isScrollEnabled = false
     }
     
-    func createQuestions(questions: [Question]) -> [QuestionView] {
-        var slides: Array<QuestionView> = []
-        let questions = quiz?.questions
-        for i in 0...questions!.count-1{
-            
-            var questionView1 = QuestionView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-            questionView1.setQuestionValues(question: questions![i], color: Constants.backgroundColors[quiz!.category]!)
-            questionView1.setConstraints(view: questionScrollView)
-            slides.append(questionView1)
-        }
-        return slides
-    }
+    func addScrollViewConstraints(scrollView: UIScrollView, subView: QuestionView){
+        let answer1Left = subView.answer1.centerYAnchor.constraint(equalTo: subView.centerYAnchor, constant:self.scrollPaneWidth!*0.05)
+        scrollView.addConstraint(answer1Left)
+     
+     }
     
     func initializeWithQuizData(){
         self.quizTitle.text = quiz?.title
@@ -132,6 +142,29 @@ class OneQuizController: UIViewController {
                 DispatchQueue.main.async {
                     imageView.image = fetchedImage
                 }
+        }
+    }
+    
+    
+    
+    func sendQuiz(){
+        let quizService = QuizService()
+        let userDefaults = UserDefaults.standard
+        let userId = userDefaults.value(forKey: "user_id") as! Int
+        let urlString = Constants.sendOneQuizURL
+        let solvedQuiz = SolvedQuiz(quizId: quiz?.id, userId: userId, time: self.duration, no_of_correct: self.numberOfCorrect)
+        let jsonEncoder = JSONEncoder()
+        let quizData = try? jsonEncoder.encode(solvedQuiz)
+        
+        quizService.postSolvedQuiz(urlString: urlString, jsonData: quizData!){ (e) in
+            DispatchQueue.main.async {
+                if e != nil {
+                    self.navigationController?.popViewController(animated: false)
+
+                }else{
+                    self.navigationController?.popViewController(animated: false)
+                }
+            }
         }
     }
 
