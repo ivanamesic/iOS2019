@@ -40,7 +40,6 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         QuizTableView.register(UINib(nibName: "QuizTableViewCell", bundle: nil), forCellReuseIdentifier: "QuizTableViewCell")
         self.QuizTableView.tableFooterView=getTableFooter(self.QuizTableView)
-        self.view.isHidden = false
 
     }
     
@@ -53,11 +52,12 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func getTableFooter(_ tableView: UITableView)->UIView{
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 25))
-        let button = UIButton(frame: CGRect(x: 10, y: 5, width: tableView.frame.size.width, height: 25))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 25))
         button.setTitle("Log out", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.backgroundColor = UIColor.darkGray
         button.isOpaque = true
+        button.isEnabled = true
         button.addTarget(self, action: #selector(SignOutButton(_:)), for: .touchUpInside)
         footerView.addSubview(button)
         return footerView
@@ -113,10 +113,10 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     func fetchQuizzes() {
-            let urlString = "https://iosquiz.herokuapp.com/api/quizzes"
-            let quizService = QuizService()
             
-            quizService.fetchQuiz(urlString: urlString) { (quizArray) in
+        let quizService = QuizService()
+            
+        quizService.fetchQuiz(urlString: Constants.fetchQuizesURL) { (quizArray) in
                 DispatchQueue.main.async {
                     if let quizArray = quizArray {
                         self.wrongFetchLabel.isHidden = true

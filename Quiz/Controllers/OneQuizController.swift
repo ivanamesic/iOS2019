@@ -16,6 +16,25 @@ struct SolvedQuiz: Codable {
 
 }
 
+extension OneQuizController: QuizProtocol{
+    func questionAnswered() {
+        self.numberOfAnswered!+=1
+        if quiz!.questions.count==numberOfAnswered{
+            self.duration = Date.init().timeIntervalSince(startTime!)
+            self.sendQuiz()
+        }else{
+            var begin: CGPoint = questionScrollView.contentOffset
+            begin.x += self.scrollPaneWidth!
+            questionScrollView.setContentOffset(begin, animated: true)
+        }
+    }
+          
+    func correctQuestion() {
+      self.numberOfCorrect! += 1
+    }
+}
+
+
 class OneQuizController: UIViewController {
     
     var quiz: Quiz?
@@ -34,7 +53,10 @@ class OneQuizController: UIViewController {
     @objc func startQuizAction(sender: UIButton!) {
         self.questionScrollView.isHidden = false
         self.startButton.isHidden = true
+        self.startTime = Date.init()
     }
+    
+   
 
     
     override func viewDidLoad() {
@@ -98,7 +120,6 @@ class OneQuizController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         let scrollX = scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         let scrollTop = scrollView.topAnchor.constraint(equalTo: self.startButton.bottomAnchor, constant: view.frame.height*0.02)
-        //let scrollBottom = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.frame.height*0.02)
         self.scrollPaneWidth = view.frame.width*0.85
         let scrollWidth = scrollView.widthAnchor.constraint(equalToConstant: scrollPaneWidth!)
         self.scrollPaneHeight = view.frame.height*0.55
@@ -115,19 +136,12 @@ class OneQuizController: UIViewController {
         questionScrollView.contentSize = CGSize(width: self.scrollPaneWidth! * CGFloat(questions!.count), height: self.scrollPaneHeight!)
         for q in 0...questions!.count-1 {
             let newView = QuestionView(frame: CGRect(x:CGFloat(q)*self.scrollPaneWidth!,y: 0,width: self.scrollPaneWidth!,height: self.scrollPaneHeight!), question: questions![q], color: Constants.backgroundColors[quiz!.category]!)
+            newView.delegate = self
             self.questionScrollView.addSubview(newView)
-
-            //addScrollViewConstraints(scrollView: questionScrollView, subView: newView)
         }
         
         questionScrollView.isScrollEnabled = false
     }
-    
-    func addScrollViewConstraints(scrollView: UIScrollView, subView: QuestionView){
-        let answer1Left = subView.answer1.centerYAnchor.constraint(equalTo: subView.centerYAnchor, constant:self.scrollPaneWidth!*0.05)
-        scrollView.addConstraint(answer1Left)
-     
-     }
     
     func initializeWithQuizData(){
         self.quizTitle.text = quiz?.title
@@ -143,14 +157,12 @@ class OneQuizController: UIViewController {
                     imageView.image = fetchedImage
                 }
         }
+
     }
-    
-    
     
     func sendQuiz(){
         let quizService = QuizService()
-        let userDefaults = UserDefaults.standard
-        let userId = userDefaults.value(forKey: "user_id") as! Int
+        let userId = UserDefaults.standard.value(forKey: "user_id") as! Int
         let urlString = Constants.sendOneQuizURL
         let solvedQuiz = SolvedQuiz(quizId: quiz?.id, userId: userId, time: self.duration, no_of_correct: self.numberOfCorrect)
         let jsonEncoder = JSONEncoder()
@@ -159,10 +171,30 @@ class OneQuizController: UIViewController {
         quizService.postSolvedQuiz(urlString: urlString, jsonData: quizData!){ (e) in
             DispatchQueue.main.async {
                 if e != nil {
-                    self.navigationController?.popViewController(animated: false)
-
+                    let code = e as! ServerResponse
+                    if code==ServerResponse.SUCCESS{
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+                            self.navigationController?.popViewController(animated: false)
+                        })
+                    } else {
+                        let title = "Error \(code.rawValue)"
+                        let alert = UIAlertController(title: title, message:"Something went wrong while posting quiz results, try again.", preferredStyle: UIAlertController.Style.alert)
+                        let tryAgainButton = UIAlertAction(title: "Try again", style: .default, handler: {(_ action: UIAlertAction) -> Void in
+                            self.sendQuiz()
+                        })
+                        let cancelButton = UIAlertAction(title: "Cancel", style: .default, handler: {(_ action: UIAlertAction) -> Void in
+                            self.navigationController?.popViewController(animated: true)
+                        })
+                        alert.addAction(tryAgainButton)
+                        alert.addAction(cancelButton)
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                    
                 }else{
-                    self.navigationController?.popViewController(animated: false)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+                                           self.navigationController?.popViewController(animated: false)
+                    })
+                    
                 }
             }
         }

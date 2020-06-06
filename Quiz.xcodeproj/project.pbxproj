@@ -29,6 +29,7 @@
 		52BFF43A248558E100F9EEC4 /* OneQuizController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BFF439248558E100F9EEC4 /* OneQuizController.swift */; };
 		52BFF43C2485A51F00F9EEC4 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BFF43B2485A51F00F9EEC4 /* RootViewController.swift */; };
 		52BFF43E248693A800F9EEC4 /* ServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BFF43D248693A800F9EEC4 /* ServerResponse.swift */; };
+		52BFF4402489403200F9EEC4 /* ProbaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BFF43F2489403200F9EEC4 /* ProbaViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		52BFF439248558E100F9EEC4 /* OneQuizController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneQuizController.swift; sourceTree = "<group>"; };
 		52BFF43B2485A51F00F9EEC4 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		52BFF43D248693A800F9EEC4 /* ServerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerResponse.swift; sourceTree = "<group>"; };
+		52BFF43F2489403200F9EEC4 /* ProbaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProbaViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 				523076E1246890AD0062A92E /* QuizViewController.xib */,
 				52BFF439248558E100F9EEC4 /* OneQuizController.swift */,
 				52BFF43B2485A51F00F9EEC4 /* RootViewController.swift */,
+				52BFF43F2489403200F9EEC4 /* ProbaViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 				523076E2246890AD0062A92E /* QuizViewController.swift in Sources */,
 				523076C124686E740062A92E /* Quiz.swift in Sources */,
 				523076AB24686DBC0062A92E /* SceneDelegate.swift in Sources */,
+				52BFF4402489403200F9EEC4 /* ProbaViewController.swift in Sources */,
 				523076BE24686E5C0062A92E /* QuizService.swift in Sources */,
 				523076AD24686DBC0062A92E /* ContentView.swift in Sources */,
 			);

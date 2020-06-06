@@ -32,6 +32,7 @@ class LoginService{
                             let userDefaults = UserDefaults.standard
                             userDefaults.set(id, forKey: "user_id")
                             userDefaults.set(token, forKey: "token")
+                            print("token", token)
                             completion(json)
                         } else {
                             completion(nil)

@@ -33,7 +33,6 @@ class LoginViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        print("LOg in did load")
         super.viewDidLoad()
         wrongPasswordLabel.isHidden = true
     }
@@ -45,7 +44,7 @@ class LoginViewController: UIViewController {
             return
         }
                
-        let urlString = "https://iosquiz.herokuapp.com/api/session"
+        let urlString = Constants.loginURL
 
         let login = LoginService()
         let jsonData:[String: Any] = [
@@ -58,10 +57,10 @@ class LoginViewController: UIViewController {
             DispatchQueue.main.async {
                 if e != nil {
                     self.wrongPasswordLabel.isHidden = true
-                    //DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                    let quizViewController = QuizViewController()
-                    self.navigationController?.pushViewController(quizViewController, animated: false)
-                    //})
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+                        let quizViewController = QuizViewController()
+                        self.navigationController?.pushViewController(quizViewController, animated: false)
+                    })
                 }else{
                     self.wrongPasswordLabel.isHidden=false;
 

@@ -16,4 +16,5 @@ enum ServerResponse:Int{
     case BAD_REQUEST = 400
     case SUCCESS = 200
     
+    
 }
