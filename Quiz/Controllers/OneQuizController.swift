@@ -9,8 +9,8 @@
 import UIKit
 
 struct SolvedQuiz: Codable {
-    var quizId: Int?
-    var userId: Int?
+    var quiz_id: Int?
+    var user_id: Int?
     var time: TimeInterval?
     var no_of_correct: Int?
 
@@ -102,7 +102,6 @@ class OneQuizController: UIViewController {
         
         let imgView = UIImageView(frame: CGRect(x: 0,y: 0,width: 100,height: 100))
         imgView.translatesAutoresizingMaskIntoConstraints = false
-        imgView.backgroundColor = UIColor.red
         view.addSubview(imgView)
 
         let imgX = imgView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
@@ -164,7 +163,7 @@ class OneQuizController: UIViewController {
         let quizService = QuizService()
         let userId = UserDefaults.standard.value(forKey: "user_id") as! Int
         let urlString = Constants.sendOneQuizURL
-        let solvedQuiz = SolvedQuiz(quizId: quiz?.id, userId: userId, time: self.duration, no_of_correct: self.numberOfCorrect)
+        let solvedQuiz = SolvedQuiz(quiz_id: quiz?.id, user_id: userId, time: self.duration, no_of_correct: self.numberOfCorrect)
         let jsonEncoder = JSONEncoder()
         let quizData = try? jsonEncoder.encode(solvedQuiz)
         

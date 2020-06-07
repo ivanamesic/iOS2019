@@ -20,9 +20,8 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I8b-Cz-r4T">
-                    <rect key="frame" x="68" y="46" width="239" height="39"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I8b-Cz-r4T">
+                    <rect key="frame" x="67.687134502923982" y="46" width="239.00000000000006" height="39"/>
                     <color key="backgroundColor" red="0.0099466657270000005" green="0.28876474499999999" blue="0.51714485880000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="19"/>
                     <state key="normal" title="FETCH QUIZZES">
@@ -32,23 +31,20 @@
                         <action selector="FetchButtonClick:" destination="-1" eventType="touchUpInside" id="2rY-NN-B7L"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Oops...an error occured while fetching quizzes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFC-3E-3SE">
-                    <rect key="frame" x="28" y="93" width="319" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Oops...an error occured while fetching quizzes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFC-3E-3SE">
+                    <rect key="frame" x="27.529239766081901" y="93" width="318.99999999999994" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Click fetch for a fun fact!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Qk-Ao-6g4">
-                    <rect key="frame" x="68" y="113" width="239" height="41"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Click fetch for a fun fact!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Qk-Ao-6g4">
+                    <rect key="frame" x="67.687134502923982" y="113" width="239.00000000000006" height="40.999999999999972"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tr2-G0-4H7">
-                    <rect key="frame" x="28" y="158" width="319" height="475"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tr2-G0-4H7">
+                    <rect key="frame" x="28.5" y="158" width="318" height="475"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                 </tableView>
                 <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" translatesAutoresizingMaskIntoConstraints="NO" id="VlO-42-Ouc" customClass="QuizTableViewCell" customModule="Quiz" customModuleProvider="target">
@@ -61,8 +57,18 @@
                 </tableViewCell>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="tr2-G0-4H7" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="4He-mS-ddK"/>
+                <constraint firstItem="tr2-G0-4H7" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="318:667" id="Bn9-Hf-v78"/>
+                <constraint firstItem="eFC-3E-3SE" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="318:667" id="LAG-yE-aOI"/>
+                <constraint firstItem="1Qk-Ao-6g4" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="239:667" id="Nqt-3Q-rmi"/>
+                <constraint firstItem="1Qk-Ao-6g4" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="TE7-hg-qm4"/>
+                <constraint firstItem="eFC-3E-3SE" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="UbY-XX-VIK"/>
+                <constraint firstItem="I8b-Cz-r4T" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="239:667" id="hRD-xy-v5b"/>
+                <constraint firstItem="I8b-Cz-r4T" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="yGJ-az-NgA"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <point key="canvasLocation" x="109.59999999999999" y="89.505247376311857"/>
+            <point key="canvasLocation" x="20" y="-7"/>
         </view>
     </objects>
 </document>
