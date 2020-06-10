@@ -28,6 +28,7 @@ class QuizService{
                             }
                         }
                         
+                        
                         completion(quizzes)
                     } catch {
                         completion(nil)
@@ -65,24 +66,5 @@ class QuizService{
         }
     }
     
-    func postSolvedQuiz(urlString: String, jsonData:Data, completion: @escaping ((Any?) -> Void)){
-        if let url = URL(string: urlString){
-            var request = URLRequest(url:url)
-            request.httpMethod="POST"
-            let token = UserDefaults.standard.string(forKey: "token")
-            request.setValue(token, forHTTPHeaderField: "Authorization")
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody=jsonData
-          
-            let dataTask = URLSession.shared.dataTask(with: request){(data, response, error) in
-                if let httpResponse = response as? HTTPURLResponse{
-                    completion(ServerResponse(rawValue: httpResponse.statusCode))
-                } else {
-                    completion(nil)
-                }
-            }
-            dataTask.resume()
-
-        }
-    }
+    
 }

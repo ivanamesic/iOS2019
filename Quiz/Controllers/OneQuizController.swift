@@ -49,6 +49,7 @@ class OneQuizController: UIViewController {
     var numberOfAnswered: Int? = 0
     var scrollPaneWidth: CGFloat?
     var scrollPaneHeight: CGFloat?
+    var leaderboardData: [Result] = []
     
     @objc func startQuizAction(sender: UIButton!) {
         self.questionScrollView.isHidden = false
@@ -56,11 +57,19 @@ class OneQuizController: UIViewController {
         self.startTime = Date.init()
     }
     
+    @objc func getLeaderboardAction(sender: UIButton!){
+        let resultsController = ResultsViewController()
+        resultsController.leaderboardResults = leaderboardData
+        print("cnt",leaderboardData.count)
+        self.navigationController?.pushViewController(resultsController, animated: true)
+    }
+    
    
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        getLeaderboardResults()
         view.backgroundColor=UIColor.white
         
 
@@ -82,19 +91,32 @@ class OneQuizController: UIViewController {
     func setStartButton(){
         
         let button = UIButton(frame: CGRect(x: 10, y: 10, width: 10, height: 10))
+        let getResultsButton = UIButton(frame: CGRect(x: 10, y: 10, width: 10, height: 10))
+        getResultsButton.setTitle("GET RESULTS", for: .normal)
+        getResultsButton.backgroundColor = UIColor.systemGray2
+        getResultsButton.isOpaque = true
+        getResultsButton.addTarget(self, action: #selector(getLeaderboardAction), for: .touchUpInside)
         button.setTitle("START QUIZ", for: .normal)
         button.backgroundColor = UIColor.systemGray2
         button.isOpaque = true
         button.setTitleColor(UIColor.white, for: .normal)
         button.addTarget(self, action: #selector(startQuizAction), for: .touchUpInside)
         view.addSubview(button)
+        view.addSubview(getResultsButton)
         button.translatesAutoresizingMaskIntoConstraints = false
+        getResultsButton.translatesAutoresizingMaskIntoConstraints=false
 
-        let buttonX = button.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         let buttonTop = button.topAnchor.constraint(equalTo: self.quizImage.bottomAnchor, constant: view.frame.height*0.02)
-        let buttonWidth = button.widthAnchor.constraint(equalToConstant: view.frame.width*0.5)
+        let button2Top = getResultsButton.topAnchor.constraint(equalTo: self.quizImage.bottomAnchor, constant: view.frame.height*0.02)
+        let buttonWidth = button.widthAnchor.constraint(equalToConstant: view.frame.width*0.35)
+        let button2Width = getResultsButton.widthAnchor.constraint(equalToConstant: view.frame.width*0.35)
         let buttonHeight = button.heightAnchor.constraint(equalToConstant: view.frame.height*0.07)
-        view.addConstraints([buttonX, buttonTop, buttonWidth, buttonHeight])
+        let button2Height = getResultsButton.heightAnchor.constraint(equalToConstant: view.frame.height*0.07)
+        let buttonLeft = button.leftAnchor.constraint(equalTo: view.leftAnchor, constant: view.frame.width*0.1)
+        let button2Left = getResultsButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: view.frame.width*0.55)
+
+        
+        view.addConstraints([buttonTop, buttonWidth, buttonHeight, button2Top, button2Width, button2Height, buttonLeft, button2Left])
         self.startButton = button
     }
     
@@ -160,14 +182,14 @@ class OneQuizController: UIViewController {
     }
     
     func sendQuiz(){
-        let quizService = QuizService()
+        let service = ResultsService()
         let userId = UserDefaults.standard.value(forKey: "user_id") as! Int
         let urlString = Constants.sendOneQuizURL
         let solvedQuiz = SolvedQuiz(quiz_id: quiz?.id, user_id: userId, time: self.duration, no_of_correct: self.numberOfCorrect)
         let jsonEncoder = JSONEncoder()
         let quizData = try? jsonEncoder.encode(solvedQuiz)
         
-        quizService.postSolvedQuiz(urlString: urlString, jsonData: quizData!){ (e) in
+        service.postSolvedQuiz(urlString: urlString, jsonData: quizData!){ (e) in
             DispatchQueue.main.async {
                 if e != nil {
                     let code = e as! ServerResponse
@@ -198,5 +220,19 @@ class OneQuizController: UIViewController {
             }
         }
     }
+    
+    func getLeaderboardResults(){
+        let service = ResultsService()
+        let quizId = quiz?.id
+        service.getResultsForQuiz(quizId: quizId!) { (response) in
+            DispatchQueue.main.async {
+                if let response = response {
+                    self.leaderboardData = response
+                }
+            }
+        }
+    }
+    
+    
 
 }

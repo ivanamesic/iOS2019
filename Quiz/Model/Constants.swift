@@ -17,5 +17,6 @@ class Constants{
     static let sendOneQuizURL = "https://iosquiz.herokuapp.com/api/result"
     static let fetchQuizesURL = "https://iosquiz.herokuapp.com/api/quizzes"
     static let loginURL = "https://iosquiz.herokuapp.com/api/session"
+    static let getQuizResultsURL = "https://iosquiz.herokuapp.com/api/score?quiz_id="
 
 }
