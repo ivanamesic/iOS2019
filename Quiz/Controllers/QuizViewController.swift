@@ -21,9 +21,9 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     @objc func SignOutButton(_ sender: UIButton) {
         let userDefaults = UserDefaults.standard
-        userDefaults.removeObject(forKey: "token")
-        userDefaults.removeObject(forKey: "user_id")
-        self.navigationController?.pushViewController(LoginViewController(), animated: false)
+        //userDefaults.removeObject(forKey: "token")
+        //userDefaults.removeObject(forKey: "user_id")
+        self.navigationController?.pushViewController(SearchController(), animated: false)
         
     }
     
@@ -39,7 +39,7 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.QuizTableView.dataSource = self
         
         QuizTableView.register(UINib(nibName: "QuizTableViewCell", bundle: nil), forCellReuseIdentifier: "QuizTableViewCell")
-        self.QuizTableView.tableFooterView=getTableFooter(self.QuizTableView)
+        //self.QuizTableView.tableFooterView=getTableFooter(self.QuizTableView)
 
     }
     
@@ -49,7 +49,7 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
            navigationController?.navigationBar.barTintColor = .clear
     }
     
-    
+    /*
     func getTableFooter(_ tableView: UITableView)->UIView{
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 25))
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 25))
@@ -61,7 +61,7 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
         button.addTarget(self, action: #selector(SignOutButton(_:)), for: .touchUpInside)
         footerView.addSubview(button)
         return footerView
-    }
+    }*/
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return allQuizzes.count

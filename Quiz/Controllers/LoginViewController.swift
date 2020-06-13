@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var usernameField: UITextField!
@@ -58,8 +59,10 @@ class LoginViewController: UIViewController {
                 if e != nil {
                     self.wrongPasswordLabel.isHidden = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                        let quizViewController = QuizViewController()
-                        self.navigationController?.pushViewController(quizViewController, animated: false)
+                        let defaults = UserDefaults.standard
+                        defaults.set(username, forKey: "username")
+                        let tabController = TabBarController()
+                        self.navigationController?.pushViewController(tabController, animated: true)
                     })
                 }else{
                     self.wrongPasswordLabel.isHidden=false;

@@ -46,10 +46,6 @@ class ResultsService{
                 if let data = data {
                     do {
                         let jsonDecoder = JSONDecoder.init()
-                        //let json = try JSONSerialization.jsonObject(with: data, options: [])
-                        //if let dictionary = json as? [String: Any]{
-                            //print(dictionary)
-                        //}
                         let results = try jsonDecoder.decode([Result].self, from: data)
                         completion(results)
                         

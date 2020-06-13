@@ -12,7 +12,15 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let quizController = QuizViewController()
+        quizController.tabBarItem = UITabBarItem(title: "Quiz", image: UIImage(named: "quiz_icon"), tag: 0)
+        let settingsController = SettingsController()
+        settingsController.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(named: "settings_icon"), tag: 1)
+        settingsController.tabBarItem.title = "Settings"
+        let searchController = SearchController()
+        searchController.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 2)
+        let tabBarList = [quizController, settingsController, searchController]
+        viewControllers = tabBarList
         // Do any additional setup after loading the view.
     }
     

@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let value = userDefaults.string(forKey: "user_id")
             var pom: UIViewController
             if (value != nil){
-                pom = QuizViewController()
+                pom = TabBarController()
             } else{
                 pom = LoginViewController()
             }
