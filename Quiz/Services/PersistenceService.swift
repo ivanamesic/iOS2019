@@ -101,8 +101,11 @@ class PersistenceService{
     }
     
     static func getQuizzesCD() -> [Quiz] {
-        var quizzes=[Quiz]()
         let db=PersistenceService.fetchQuizzes()
+        return getQuizFromQuizCD(quizzesCD: db!)
+    }
+    
+    static func getQuizFromQuizCD(quizzesCD: [QuizCD])->[Quiz]{
         var qid: Int
         var qtitle: String
         var qdescription: String?
@@ -110,8 +113,9 @@ class PersistenceService{
         var qlevel: Int
         var qimage: String?
         var qquestions: [Question]=[]
+        var quizzes=[Quiz]()
         
-        for quiz in db! {
+        for quiz in quizzesCD {
             qid=Int(quiz.id)
             qimage=quiz.image
             qlevel=Int(quiz.level)
@@ -121,9 +125,21 @@ class PersistenceService{
             for q in quiz.questions {
                 qquestions.append(Question(id: Int(q.question_id), questionText: q.question_text, answers: [q.answer1,q.answer2,q.answer3,q.answer4], correctAnswer: Int(q.correct_question)))
             }
-            print(qcategory)
             quizzes.append(Quiz(id: qid, title: qtitle, description: qdescription!, category: qcategory, level: qlevel, image: qimage!, questions: qquestions))
         }
         return quizzes
+    }
+    
+    static func getFilteredQuizzesCD(constant: String)->[Quiz]{
+        var fetchedResults:[QuizCD]=[]
+        do {
+            let fetchRequest : NSFetchRequest<QuizCD> = QuizCD.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "quiz_description CONTAINS[cd] %@ OR title CONTAINS[cd] %@", constant, constant)
+            fetchedResults = try context.fetch(fetchRequest)
+            
+        } catch {
+            print ("fetch task failed", error)
+        }
+        return getQuizFromQuizCD(quizzesCD: fetchedResults)
     }
 }

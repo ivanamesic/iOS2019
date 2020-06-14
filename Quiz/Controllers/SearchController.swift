@@ -14,8 +14,10 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     var searchButton = UIButton()
     var tableView = UITableView()
     
-    var categories: [Int:QuizCategory] = [:]
     var searchResults: Array<Array<Quiz>> = []
+    var refresher: UIRefreshControl!
+    var groupedByCategories: [QuizCategory: Array<Quiz>] = [:]
+    var categories: [Int:QuizCategory] = [:]
     
     @objc func beginSearchAction(_ sender: UIButton){
         self.search()
@@ -42,6 +44,7 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
         searchButton.setTitle("SEARCH", for: .normal)
         searchButton.backgroundColor = UIColor(red: 0.11, green: 0.42, blue: 0.75, alpha: 1.00)
         searchButton.setTitleColor(UIColor.white, for: .normal)
+        searchButton.addTarget(self, action: #selector(beginSearchAction(_:)), for: .touchUpInside)
         
         searchButton.translatesAutoresizingMaskIntoConstraints = false
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -96,7 +99,6 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(section)
         return searchResults[section].count
     }
     
@@ -132,17 +134,33 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     func search(){
-        
+        let keyWord = self.textField.text
+        let quizzes = PersistenceService.getFilteredQuizzesCD(constant: keyWord!)
+        fillElementsWithData(quizzes: quizzes)
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func fillElementsWithData(quizzes: [Quiz]){
+        var tempDict: [QuizCategory:Array<Quiz>] = [:]
+        for quiz in quizzes{
+            var res = tempDict[quiz.category]
+            if res==nil{
+                let newar = [quiz]
+                tempDict[quiz.category]=newar
+            } else {
+                res?.append(quiz)
+                tempDict[quiz.category]=res
+            }
+        }
+        
+        self.groupedByCategories=tempDict
+        self.searchResults.removeAll()
+        var counter = 0
+        for (cat, ar) in tempDict{
+            self.searchResults.append(ar)
+            self.categories[counter]=cat
+            counter += 1
+        }
+        self.tableView.reloadData()
     }
-    */
 
 }

@@ -113,39 +113,8 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
         quizService.fetchQuiz(urlString: Constants.fetchQuizesURL) { (quizArray) in
                 DispatchQueue.main.async {
                     if let quizArray = quizArray {
-                        /*self.wrongFetchLabel.isHidden = true
-                        var collection: Array<String> = []
-                        var tempDict: [QuizCategory:Array<Quiz>] = [:]
-                        for quiz in quizArray{
-                            for question in quiz!.questions{
-                                collection.append(question.questionText)
-                            }
-                            var res = tempDict[quiz!.category]
-                            if res==nil{
-                                var newar = [quiz!]
-                                tempDict[quiz!.category]=newar
-                            } else {
-                                res?.append(quiz!)
-                                tempDict[quiz!.category]=res
-                            }
-                        }
-                        
-                        let number = collection.filter({e in e.contains("NBA")}).count
-                        self.groupedByCategories=tempDict
-                        self.allQuizzes.removeAll()
-                        var counter = 0
-                        for (cat, ar) in tempDict{
-                            self.allQuizzes.append(ar)
-                            self.categories[counter]=cat
-                            counter += 1
-                        }
-                        
-                        self.funFactLabel.text="FUN FACT: The word NBA is in questions \(number) times"
-                        self.QuizTableView.reloadData()*/
-                        print(quizArray)
                         PersistenceService.saveQuizzes(quizzes: quizArray)
                         let quizzes: Array<Quiz> = PersistenceService.getQuizzesCD()
-                        print("quizzzz", quizzes)
                         self.fillElementsWithData(quizzes: quizzes)
                         
                     } else{
