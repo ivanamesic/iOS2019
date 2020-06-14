@@ -30,4 +30,11 @@ class Question{
             return nil
         }
     }
+    
+    init(id: Int, questionText: String, answers: [String], correctAnswer: Int){
+        self.id = id
+        self.questionText = questionText
+        self.answers = answers
+        self.correct_answer = correctAnswer
+    }
 }

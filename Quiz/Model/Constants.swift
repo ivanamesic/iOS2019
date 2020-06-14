@@ -19,4 +19,5 @@ class Constants{
     static let loginURL = "https://iosquiz.herokuapp.com/api/session"
     static let getQuizResultsURL = "https://iosquiz.herokuapp.com/api/score?quiz_id="
 
+    static let userdef_addedQuizzes = "addedQuizzes"
 }

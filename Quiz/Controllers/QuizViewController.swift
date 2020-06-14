@@ -7,20 +7,27 @@
 //
 
 import UIKit
+import CoreData
 
 class QuizViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     
     @IBAction func FetchButtonClick(_ sender: UIButton) {
         if sender.tag != 0 {return}
-        fetchQuizzes()
+        self.reachability = try! Reachability.init()
+        if reachability?.connection != Reachability.Connection.unavailable {
+            fetchQuizzesOnline()
+        } else {
+            let quizzes: Array<Quiz> = PersistenceService.getQuizzesCD()
+            fillElementsWithData(quizzes: quizzes)
+        }
     }
     @IBOutlet weak var QuizTableView: UITableView!
     @IBOutlet weak var wrongFetchLabel: UILabel!
     @IBOutlet weak var funFactLabel: UILabel!
 
     @objc func SignOutButton(_ sender: UIButton) {
-        let userDefaults = UserDefaults.standard
+        _ = UserDefaults.standard
         //userDefaults.removeObject(forKey: "token")
         //userDefaults.removeObject(forKey: "user_id")
         self.navigationController?.pushViewController(SearchController(), animated: false)
@@ -32,6 +39,8 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
     var groupedByCategories: [QuizCategory: Array<Quiz>] = [:]
     var categories: [Int:QuizCategory] = [:]
     
+    var reachability: Reachability?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.wrongFetchLabel.isHidden = true
@@ -39,7 +48,6 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.QuizTableView.dataSource = self
         
         QuizTableView.register(UINib(nibName: "QuizTableViewCell", bundle: nil), forCellReuseIdentifier: "QuizTableViewCell")
-        //self.QuizTableView.tableFooterView=getTableFooter(self.QuizTableView)
 
     }
     
@@ -48,20 +56,6 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
            navigationController?.navigationBar.isTranslucent = true
            navigationController?.navigationBar.barTintColor = .clear
     }
-    
-    /*
-    func getTableFooter(_ tableView: UITableView)->UIView{
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 25))
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 25))
-        button.setTitle("Log out", for: .normal)
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.backgroundColor = UIColor.darkGray
-        button.isOpaque = true
-        button.isEnabled = true
-        button.addTarget(self, action: #selector(SignOutButton(_:)), for: .touchUpInside)
-        footerView.addSubview(button)
-        return footerView
-    }*/
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return allQuizzes.count
@@ -76,7 +70,7 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         cell.quizCellTitle.text = thisCell.title
         var lvl = "";
-        for i in 1...thisCell.level{
+        for _ in 1...thisCell.level{
             lvl += "*"
         }
         cell.quizCellLevel.text = lvl
@@ -112,14 +106,14 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     
-    func fetchQuizzes() {
+    func fetchQuizzesOnline() {
             
         let quizService = QuizService()
             
         quizService.fetchQuiz(urlString: Constants.fetchQuizesURL) { (quizArray) in
                 DispatchQueue.main.async {
                     if let quizArray = quizArray {
-                        self.wrongFetchLabel.isHidden = true
+                        /*self.wrongFetchLabel.isHidden = true
                         var collection: Array<String> = []
                         var tempDict: [QuizCategory:Array<Quiz>] = [:]
                         for quiz in quizArray{
@@ -147,15 +141,51 @@ class QuizViewController: UIViewController, UITableViewDelegate, UITableViewData
                         }
                         
                         self.funFactLabel.text="FUN FACT: The word NBA is in questions \(number) times"
-                        self.QuizTableView.reloadData()
+                        self.QuizTableView.reloadData()*/
+                        print(quizArray)
+                        PersistenceService.saveQuizzes(quizzes: quizArray)
+                        let quizzes: Array<Quiz> = PersistenceService.getQuizzesCD()
+                        print("quizzzz", quizzes)
+                        self.fillElementsWithData(quizzes: quizzes)
                         
                     } else{
                         self.wrongFetchLabel.isHidden = false
                     }
                 }
             }
-            
+    }
+    
+    func fillElementsWithData(quizzes: [Quiz]){
+        self.wrongFetchLabel.isHidden = true
+        var collection: Array<String> = []
+        var tempDict: [QuizCategory:Array<Quiz>] = [:]
+        for quiz in quizzes{
+            for question in quiz.questions{
+                collection.append(question.questionText)
+            }
+            var res = tempDict[quiz.category]
+            if res==nil{
+                let newar = [quiz]
+                tempDict[quiz.category]=newar
+            } else {
+                res?.append(quiz)
+                tempDict[quiz.category]=res
+            }
         }
+        
+        let number = collection.filter({e in e.contains("NBA")}).count
+        self.groupedByCategories=tempDict
+        self.allQuizzes.removeAll()
+        var counter = 0
+        for (cat, ar) in tempDict{
+            self.allQuizzes.append(ar)
+            self.categories[counter]=cat
+            counter += 1
+        }
+        
+        self.funFactLabel.text="FUN FACT: The word NBA is in questions \(number) times"
+        self.QuizTableView.reloadData()
+    }
         
     func fetchQuizImage(pickedQuiz: Quiz, imageView: UIImageView){
 

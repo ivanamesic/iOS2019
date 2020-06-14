@@ -10,8 +10,6 @@ import UIKit
 
 class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
     
-    
-
     var textField = UITextField()
     var searchButton = UIButton()
     var tableView = UITableView()

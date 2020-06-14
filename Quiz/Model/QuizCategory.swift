@@ -18,7 +18,7 @@ enum QuizCategory:String{
     }
     
     init(name: String) {
-        switch name {
+        switch name.uppercased() {
         case "SPORTS":
            self = .sports
         default:

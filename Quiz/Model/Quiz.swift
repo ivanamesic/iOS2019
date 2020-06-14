@@ -46,6 +46,16 @@ class Quiz{
         }
     }
     
+    init(id: Int, title: String, description: String, category: String, level: Int, image: String, questions: [Question]){
+        self.id = id
+        self.title = title
+        self.description = description
+        self.category = QuizCategory(name: category)
+        self.level = level
+        self.image = image
+        self.questions = questions
+    }
+    
     
     
 }
