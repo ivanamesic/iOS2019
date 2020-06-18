@@ -9,8 +9,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController" customModule="Quiz" customModuleProvider="target">
             <connections>
+                <outlet property="clearButton" destination="NO4-g3-KxA" id="ZHe-uu-WF8"/>
+                <outlet property="loginImageView" destination="luW-go-HEG" id="GwV-86-jLJ"/>
                 <outlet property="passwordField" destination="6qI-Ug-6c9" id="Irh-ob-OQk"/>
+                <outlet property="passwordLabel" destination="270-8N-2rM" id="SoK-oB-y4c"/>
+                <outlet property="signinButton" destination="eoB-1U-mvc" id="sd8-rI-WKe"/>
                 <outlet property="usernameField" destination="0mQ-KK-n16" id="mRo-nZ-jlR"/>
+                <outlet property="usernameLabel" destination="yHN-AR-wHP" id="bWn-yv-Jr8"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="wrongPasswordLabel" destination="0mk-8t-Rw5" id="CWE-h2-bDL"/>
             </connections>

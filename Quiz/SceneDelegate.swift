@@ -62,9 +62,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
     
-    func switchScreenToQuiz(){
-        
-    }
 
 
 }
